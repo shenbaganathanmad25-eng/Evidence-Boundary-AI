@@ -11,6 +11,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from config import settings
 from database.db import init_db
 from api.router import api_router
+from api.predict_router import router as predict_router
 
 # Configure logging
 logging.basicConfig(
@@ -47,8 +48,9 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={"detail": "Internal Evidence Boundary server error", "error": str(exc)}
     )
 
-# Include API Router
+# Include API Router and Root Predict Router
 app.include_router(api_router)
+app.include_router(predict_router)  # Mounted at root for POST /predict and GET /health
 
 if __name__ == "__main__":
     import uvicorn

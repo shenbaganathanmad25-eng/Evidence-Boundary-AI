@@ -7,9 +7,15 @@ from models.evidence import SupportDirectionEnum
 logger = logging.getLogger("evidence_boundary.ml_passage_classifier")
 
 BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-MODELS_DIR = os.path.join(BACKEND_DIR, "models_dir")
-CLASSIFIER_PATH = os.path.join(MODELS_DIR, "evidence_classifier.pkl")
-VECTORIZER_PATH = os.path.join(MODELS_DIR, "tfidf_vectorizer.pkl")
+
+LABEL_MAPPING = {
+    "SUPPORTS": "SUPPORTING",
+    "REFUTES": "CONTRADICTING",
+    "NOT_ENOUGH_INFO": "NEUTRAL",
+    "SUPPORTING": "SUPPORTING",
+    "CONTRADICTING": "CONTRADICTING",
+    "NEUTRAL": "NEUTRAL"
+}
 
 class MLPassageClassifier:
     """Trained Supervised ML Classifier (TF-IDF + Logistic Regression) for predicting evidence SupportDirection."""
@@ -17,22 +23,51 @@ class MLPassageClassifier:
     def __init__(self):
         self.classifier = None
         self.vectorizer = None
+        self.label_encoder = None
         self.is_loaded = False
         self._load_model()
 
     def _load_model(self):
-        if os.path.exists(CLASSIFIER_PATH) and os.path.exists(VECTORIZER_PATH):
-            try:
-                self.classifier = joblib.load(CLASSIFIER_PATH)
-                self.vectorizer = joblib.load(VECTORIZER_PATH)
-                self.is_loaded = True
-                logger.info("Loaded pre-trained ML Evidence Classifier from disk.")
-            except Exception as e:
-                logger.error(f"Error loading ML model files: {e}")
-                self.is_loaded = False
-        else:
-            logger.warning(f"ML model files not found at {CLASSIFIER_PATH}. Will train or fallback.")
-            self.is_loaded = False
+        # Priority 1: Check models/ or models_dir/ for verification_model.pkl & tfidf_vectorizer.pkl
+        candidate_dirs = [
+            os.path.join(BACKEND_DIR, "models"),
+            os.path.join(BACKEND_DIR, "models_dir"),
+            os.path.join(os.path.dirname(BACKEND_DIR), "models")
+        ]
+
+        for m_dir in candidate_dirs:
+            model_p = os.path.join(m_dir, "verification_model.pkl")
+            vec_p = os.path.join(m_dir, "tfidf_vectorizer.pkl")
+            enc_p = os.path.join(m_dir, "label_encoder.pkl")
+
+            if not os.path.exists(model_p):
+                model_p = os.path.join(m_dir, "evidence_classifier.pkl")
+
+            if os.path.exists(model_p) and os.path.exists(vec_p):
+                try:
+                    classifier = joblib.load(model_p)
+                    vectorizer = joblib.load(vec_p)
+                    
+                    # Verify feature count compatibility
+                    test_vec = vectorizer.transform(["test [SEP] test"])
+                    if hasattr(classifier, "n_features_in_") and classifier.n_features_in_ != test_vec.shape[1]:
+                        logger.warning(f"Feature count mismatch at {m_dir} ({test_vec.shape[1]} vs {classifier.n_features_in_}). Skipping.")
+                        continue
+
+                    self.classifier = classifier
+                    self.vectorizer = vectorizer
+                    if os.path.exists(enc_p):
+                        self.label_encoder = joblib.load(enc_p)
+                    
+                    self.is_loaded = True
+                    logger.info(f"Successfully loaded matching ML Classifier from: {m_dir}")
+                    return
+                except Exception as e:
+                    logger.error(f"Error loading model from {m_dir}: {e}")
+                    continue
+
+        logger.warning("No matching ML model files found. Using heuristic fallback.")
+        self.is_loaded = False
 
     def classify_passage(
         self,
@@ -47,45 +82,53 @@ class MLPassageClassifier:
         if not self.is_loaded:
             return self._heuristic_fallback(subclaim_text, passage_text)
 
-        combined_input = f"{subclaim_text} [SEP] {passage_text}"
-        X_vec = self.vectorizer.transform([combined_input])
-        
-        # Get prediction probabilities across classes
-        probs = self.classifier.predict_proba(X_vec)[0]
-        classes = self.classifier.classes_
+        try:
+            combined_input = f"{subclaim_text.lower().strip()} [SEP] {passage_text.lower().strip()}"
+            X_vec = self.vectorizer.transform([combined_input])
+            
+            if hasattr(self.classifier, "predict_proba"):
+                probs = self.classifier.predict_proba(X_vec)[0]
+                classes = self.classifier.classes_
+            else:
+                scores = self.classifier.decision_function(X_vec)[0]
+                exp_s = np.exp(scores - np.max(scores))
+                probs = exp_s / np.sum(exp_s)
+                classes = self.classifier.classes_
 
-        prob_dict = {cls: float(prob) for cls, prob in zip(classes, probs)}
-        
-        # Ensure all 3 labels exist in output dictionary
-        for label in ["SUPPORTING", "CONTRADICTING", "NEUTRAL"]:
-            if label not in prob_dict:
-                prob_dict[label] = 0.0
+            if self.label_encoder is not None:
+                raw_labels = self.label_encoder.inverse_transform(classes)
+            else:
+                raw_labels = classes
 
-        # Find max probability prediction
-        predicted_label = max(prob_dict, key=prob_dict.get)
-        max_prob = prob_dict[predicted_label]
+            prob_dict = {"SUPPORTING": 0.0, "CONTRADICTING": 0.0, "NEUTRAL": 0.0}
+            for raw_lbl, prob in zip(raw_labels, probs):
+                mapped_lbl = LABEL_MAPPING.get(str(raw_lbl).upper(), "NEUTRAL")
+                prob_dict[mapped_lbl] = max(prob_dict[mapped_lbl], float(prob))
 
-        # Apply threshold rule: If max probability is below threshold, default to NEUTRAL
-        if max_prob < confidence_threshold:
-            final_label = "NEUTRAL"
-            logger.info(f"ML Classifier prediction ({predicted_label} @ {max_prob:.2f}) below threshold {confidence_threshold}. Assigned NEUTRAL.")
-        else:
-            final_label = predicted_label
+            predicted_label = max(prob_dict, key=prob_dict.get)
+            max_prob = prob_dict[predicted_label]
 
-        return {
-            "label": final_label,
-            "raw_prediction": predicted_label,
-            "confidence": round(max_prob, 4),
-            "probabilities": {
-                "SUPPORTING": round(prob_dict.get("SUPPORTING", 0.0), 4),
-                "CONTRADICTING": round(prob_dict.get("CONTRADICTING", 0.0), 4),
-                "NEUTRAL": round(prob_dict.get("NEUTRAL", 0.0), 4),
+            if max_prob < confidence_threshold:
+                final_label = "NEUTRAL"
+            else:
+                final_label = predicted_label
+
+            return {
+                "label": final_label,
+                "raw_prediction": predicted_label,
+                "confidence": round(max_prob, 4),
+                "probabilities": {
+                    "SUPPORTING": round(prob_dict["SUPPORTING"], 4),
+                    "CONTRADICTING": round(prob_dict["CONTRADICTING"], 4),
+                    "NEUTRAL": round(prob_dict["NEUTRAL"], 4),
+                }
             }
-        }
+        except Exception as e:
+            logger.error(f"Error in classify_passage: {e}. Falling back to heuristic.")
+            return self._heuristic_fallback(subclaim_text, passage_text)
 
     def _heuristic_fallback(self, subclaim: str, passage: str) -> Dict[str, Any]:
         pass_lower = passage.lower()
-        sub_lower = subclaim.lower()
 
         if any(w in pass_lower for w in ["failed to", "no evidence", "contradict", "zero impact", "unaffected"]):
             label = "CONTRADICTING"

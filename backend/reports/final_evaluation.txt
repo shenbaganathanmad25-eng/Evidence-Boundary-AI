@@ -1,0 +1,30 @@
+EVIDENCE BOUNDARY AI — FINAL MODEL EVALUATION REPORT
+====================================================
+
+Selected Best Model: Logistic Regression
+Model Type: TF-IDF + LogisticRegression
+Random Seed: 42
+
+FINAL UNTOUCHED TEST SET METRICS:
+  FINAL TEST ACCURACY:   91.87%
+  FINAL TEST MACRO F1:    0.9183
+  FINAL TEST WEIGHTED F1: 0.9183
+  PRECISION (Weighted):  0.9231
+  RECALL (Weighted):     0.9187
+
+CLASSIFICATION REPORT:
+                 precision    recall  f1-score   support
+
+NOT_ENOUGH_INFO       1.00      1.00      1.00       500
+        REFUTES       0.83      0.94      0.89       500
+       SUPPORTS       0.94      0.81      0.87       500
+
+       accuracy                           0.92      1500
+      macro avg       0.92      0.92      0.92      1500
+   weighted avg       0.92      0.92      0.92      1500
+
+
+CONFUSION MATRIX:
+[[500   0   0]
+ [  0 472  28]
+ [  0  94 406]]

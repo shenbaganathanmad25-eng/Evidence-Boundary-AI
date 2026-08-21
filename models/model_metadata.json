@@ -1,0 +1,13 @@
+{
+  "model_name": "Logistic Regression",
+  "training_date": "2026-08-21 14:43:29",
+  "dataset_version": "v1.0-Colleges_India",
+  "number_of_training_samples": 12000,
+  "number_of_validation_samples": 1500,
+  "number_of_test_samples": 1500,
+  "features_used": "TF-IDF (1,2) N-Grams",
+  "accuracy": 0.9186666666666666,
+  "macro_f1": 0.918310828636206,
+  "weighted_f1": 0.9183108286362061,
+  "random_seed": 42
+}
