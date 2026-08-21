@@ -1,0 +1,142 @@
+{
+  "scenario_id": "scenario_medical",
+  "title": "Daily Omega-3 & Cognitive Decline Prevention",
+  "domain": "Medical Science & Neurology",
+  "raw_claim": "Daily high-dose Omega-3 supplementation (2000mg EPA/DHA) completely prevents cognitive decline and reverses early-stage Alzheimer's disease in adults over 65.",
+  "sub_claims": [
+    {
+      "id": "sub_1",
+      "text": "Daily high-dose Omega-3 (2000mg EPA/DHA) reduces plasma biomarkers associated with neuroinflammation.",
+      "original_claim_segment": "Daily high-dose Omega-3 supplementation (2000mg EPA/DHA) reduces neuroinflammation",
+      "is_supported": true,
+      "confidence_level": 0.89,
+      "boundary_gap_description": "Supported by biomarker measurements (p-tau181 reduction) in 12-week clinical trials."
+    },
+    {
+      "id": "sub_2",
+      "text": "Supplementation completely prevents age-related cognitive decline.",
+      "original_claim_segment": "completely prevents cognitive decline",
+      "is_supported": false,
+      "confidence_level": 0.15,
+      "boundary_gap_description": "UNSUPPORTED BOUNDARY GAP: Absolute prevention claims contradict meta-analyses showing no significant difference in MMSE cognitive scores at 2 years."
+    },
+    {
+      "id": "sub_3",
+      "text": "Omega-3 supplementation reverses existing early-stage Alzheimer's disease structural pathology.",
+      "original_claim_segment": "reverses early-stage Alzheimer's disease",
+      "is_supported": false,
+      "confidence_level": 0.05,
+      "boundary_gap_description": "REFUTED BOUNDARY GAP: Neuroimaging studies confirm amyloid plaque accumulation and brain atrophy are unaffected by fatty acid supplementation."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_1",
+      "sub_claim_id": "sub_1",
+      "source_title": "Effects of High-Dose Omega-3 Fatty Acids on Inflammatory Biomarkers in Mild Cognitive Impairment",
+      "authors": "Freund-Levi, Y., et al.",
+      "source_url": "https://openalex.org/works/W209148382",
+      "publication_year": 2018,
+      "quote_snippet": "Administration of 1.7g DHA + 0.6g EPA daily for 6 months suppressed CSF interleukin-6 and reduced plasma inflammatory markers in ApoE4 non-carriers.",
+      "evidence_type": "SUPPORTING",
+      "relevance_score": 0.94,
+      "sample_size": "N = 204 patients",
+      "target_population": "Mild Cognitive Impairment (MCI) Adults age 65-80",
+      "methodology": "Double-blind RCT",
+      "is_demo": true
+    },
+    {
+      "id": "ev_2",
+      "sub_claim_id": "sub_2",
+      "source_title": "Long-term Omega-3 Supplementation and Cognitive Function in Older Adults: Cochrane Systematic Review",
+      "authors": "Sydenham, E., Dangour, A. D., & Lim, W. S.",
+      "source_url": "https://openalex.org/works/W210493821",
+      "publication_year": 2021,
+      "quote_snippet": "Direct comparison across 43 RCTs revealed no statistically significant prevention of dementia onset or slowdown in Mini-Mental State Examination (MMSE) score decline.",
+      "evidence_type": "CONTRADICTORY",
+      "relevance_score": 0.97,
+      "sample_size": "N = 24,510 participants across 43 trials",
+      "target_population": "Adults age 60+",
+      "methodology": "Systematic Review & Meta-Analysis",
+      "is_demo": true
+    },
+    {
+      "id": "ev_3",
+      "sub_claim_id": "sub_3",
+      "source_title": "Amyloid-PET Imaging Outcomes in ApoE4 Carriers Under Omega-3 Therapy",
+      "authors": "Quinn, J. F., et al.",
+      "source_url": "https://openalex.org/works/W213840291",
+      "publication_year": 2020,
+      "quote_snippet": "DHA supplementation failed to slow the rate of brain atrophy on volumetric MRI or reduce cortical amyloid-beta burden in mild-to-moderate Alzheimer's disease.",
+      "evidence_type": "CONTRADICTORY",
+      "relevance_score": 0.96,
+      "sample_size": "N = 402 patients",
+      "target_population": "Diagnosed Mild Alzheimer's Patients",
+      "methodology": "PET Imaging RCT",
+      "is_demo": true
+    }
+  ],
+  "ebdf_deltas": {
+    "delta_scope": "Evidence studied ApoE4 non-carriers with mild impairment; Claim expands scope to universal prevention and treatment for all Alzheimer's patients.",
+    "delta_certainty": "Evidence reports minor biomarker modulation in CSF; Claim elevates this to 'completely prevents' and 'reverses' structural disease.",
+    "delta_temporal": "Evidence evaluated 6-month to 2-year trial windows; Claim asserts permanent disease reversal.",
+    "delta_causal": "Claim assumes biomarker lowering equals functional clinical reversal, ignoring irreversible neurodegenerative cell loss."
+  },
+  "stress_test_results": [
+    {
+      "perturbation_type": "CERTAINTY_ELEVATION",
+      "scenario_title": "Clinical Efficacy Attack",
+      "attack_hypothesis": "Test if CSF inflammatory reduction leads to measurable MMSE score improvement.",
+      "original_evidence_holding": "Biomarker modulation observed in ApoE4 non-carriers.",
+      "attacked_condition": "Standard clinical MMSE cognitive evaluation scores.",
+      "claim_survived": false,
+      "fragility_impact": 30.0,
+      "breaking_point_explanation": "FAILED: Biomarker lowering does not translate into measurable cognitive preservation or symptom reversal."
+    },
+    {
+      "perturbation_type": "SCOPE_SHIFT",
+      "scenario_title": "Genetic Subgroup (ApoE4) Attack",
+      "attack_hypothesis": "Test if supplementation provides any benefit to ApoE4 allele carriers (high risk group).",
+      "original_evidence_holding": "Non-significant trend in general population.",
+      "attacked_condition": "ApoE4 homozygous subjects with high baseline amyloid load.",
+      "claim_survived": false,
+      "fragility_impact": 25.0,
+      "breaking_point_explanation": "FAILED: Zero therapeutic effect observed in ApoE4 carriers, breaking the universal claim scope."
+    },
+    {
+      "perturbation_type": "CAUSAL_LEAP",
+      "scenario_title": "Pathology Reversal Attack",
+      "attack_hypothesis": "Test if Omega-3 clears established beta-amyloid plaques or tau tangles.",
+      "original_evidence_holding": "No PET imaging amyloid reduction.",
+      "attacked_condition": "Mild Alzheimer's dementia structural reversal.",
+      "claim_survived": false,
+      "fragility_impact": 30.0,
+      "breaking_point_explanation": "FAILED: Amyloid-PET imaging conclusively shows no plaque clearance or reversal."
+    }
+  ],
+  "fragility": {
+    "overall_score": 92.0,
+    "unsupported_boundary_penalty": 42.0,
+    "stress_test_failure_penalty": 35.0,
+    "ebdf_delta_penalty": 15.0,
+    "fragility_tier": "CRITICAL_FRAGILITY",
+    "explanation_summary": "Extremely fragile claim. Modest biomarker modulation in small sub-studies has been exaggerated into an unproven claim of complete Alzheimer's prevention and reversal."
+  },
+  "verdict": "REFUTED",
+  "verdict_justification": "Large-scale meta-analyses and PET neuroimaging trials explicitly refute claims of Alzheimer's disease reversal or complete cognitive decline prevention.",
+  "boundary_summary": "Evidence boundary ends at temporary anti-inflammatory biomarker modulation in ApoE4 non-carriers. Clinical prevention and reversal claims are contradicted by empirical data.",
+  "killer_questions": [
+    "What Phase III trial demonstrates statistically significant MMSE score improvement from Omega-3 monotherapy?",
+    "Why does the claim state 'reverses Alzheimer's' when Quinn et al. PET imaging proved zero amyloid plaque reduction?",
+    "How does the claim address the lack of efficacy in ApoE4 gene carriers?"
+  ],
+  "missing_evidence_requirements": [
+    "Phase III double-blind RCT showing cognitive scale improvement (ADAS-Cog) sustained over 5+ years.",
+    "Neuroimaging data proving structural reduction in tau tangles or beta-amyloid burden.",
+    "Replicated trial demonstrating efficacy across both ApoE4 positive and negative genotypes."
+  ],
+  "evidence_mutations": [
+    "Source quote 'suppressed CSF interleukin-6' exaggerated into 'completely prevents cognitive decline'.",
+    "Source quote 'failed to slow rate of brain atrophy' inverted into 'reverses early-stage Alzheimer's'."
+  ]
+}

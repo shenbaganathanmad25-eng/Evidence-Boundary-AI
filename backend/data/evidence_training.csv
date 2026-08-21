@@ -1,0 +1,31 @@
+subclaim,evidence,label,domain
+"AI tutoring caused a 35% increase in exam scores","Intelligent tutoring systems demonstrated a statistically significant 35% gain in standardized exam scores in a randomized controlled trial.",SUPPORTING,Education
+"AI tutoring caused a 35% increase in exam scores","Students using the AI tutoring platform scored 35% higher on final math assessments compared to control groups.",SUPPORTING,Education
+"Reducing class sizes below 15 improves 4th grade math scores","Students in classes with fewer than 15 pupils scored 0.25 standard deviations higher on 4th grade math tests.",SUPPORTING,Education
+"Daily high-dose Omega-3 reduces plasma biomarkers of neuroinflammation","Administration of 2000mg EPA/DHA daily for 12 weeks significantly reduced plasma p-tau181 inflammatory biomarkers.",SUPPORTING,Medicine
+"Model X-900 scores 88% on standardized Uniform Bar Exam questions","Evaluation on the MBE section confirmed Model X-900 achieved an 88% accuracy rate on multiple-choice questions.",SUPPORTING,AI Benchmarks
+"Small class sizes increase college enrollment for disadvantaged students","Disadvantaged students in small elementary classes showed a 4.2% increase in college attendance rates.",SUPPORTING,Education
+"AI tutoring caused a 35% increase in exam scores","Meta-analysis of 40 trials found AI tutoring improved scores by only 4.2%, with no evidence of a 35% increase.",CONTRADICTING,Education
+"AI tutoring caused a 35% increase in exam scores","Controlled evaluation showed no statistically significant difference in exam scores between AI tutored and control students.",CONTRADICTING,Education
+"Reducing class sizes below 15 increases high school STEM graduation by 35%","Longitudinal tracking through high school showed zero statistically significant impact of elementary class size on STEM graduation.",CONTRADICTING,Education
+"Daily high-dose Omega-3 completely prevents cognitive decline and reverses Alzheimer's","Meta-analysis of 43 RCTs involving 24,000 patients showed Omega-3 supplementation failed to prevent cognitive decline or reverse Alzheimer's.",CONTRADICTING,Medicine
+"Model X-900 eliminates human lawyer oversight in corporate M&A due diligence","Unassisted LLM models missed 18.4% of indemnification clause exceptions, creating unmanaged liability risks.",CONTRADICTING,AI Benchmarks
+"Small class sizes benefit all socioeconomic demographics equally","Class size reduction benefits were concentrated in Title I schools, showing near-zero effect in affluent suburban districts.",CONTRADICTING,Education
+"AI tutoring caused a 35% increase in exam scores","AI tutoring software was deployed across 15 high schools in the district during the fall semester.",NEUTRAL,Education
+"Reducing class sizes below 15 improves 4th grade math scores","The state legislature allocated $50 million for elementary school infrastructure and textbook updates.",NEUTRAL,Education
+"Daily high-dose Omega-3 reduces plasma biomarkers of neuroinflammation","Dietary fatty acids are commonly found in salmon, walnuts, and flaxseed oil.",NEUTRAL,Medicine
+"Model X-900 scores 88% on standardized Uniform Bar Exam questions","Law school accreditation standards require three years of post-secondary legal instruction.",NEUTRAL,AI Benchmarks
+"AI tutoring caused a 35% increase in exam scores","Observational data shows an association between AI tool usage and student study hours, but no causal link to exam scores was proven.",CONTRADICTING,Education
+"Classroom size reduction below 15 students increases math scores by 25%","Observational correlation was observed, but correlation does not imply direct causation without controlling for teacher tenure.",CONTRADICTING,Education
+"Daily high-dose Omega-3 completely prevents cognitive decline","CSF biomarker modulation was observed in ApoE4 non-carriers, but MMSE cognitive scores were unaffected.",CONTRADICTING,Medicine
+"AI tutoring caused a 35% increase in exam scores","The study measured student satisfaction surveys after using the software interface for two weeks.",NEUTRAL,Education
+"Reducing class sizes below 15 improves 4th grade math scores","Primary school enrollment increased by 12% across suburban districts over the last decade.",NEUTRAL,Education
+"Model X-900 surpasses human legal experts in contract analysis","Contract drafting templates vary across federal and state court jurisdictions.",NEUTRAL,AI Benchmarks
+"AI tutoring caused a 35% increase in exam scores","In a trial of 45 students at one private school, test scores improved by 35% over a 3-week unit.",SUPPORTING,Education
+"Class size reduction below 15 students improves math assessment scores","Project STAR randomized controlled trial proved a 0.28 standard deviation increase in primary math scores.",SUPPORTING,Education
+"Daily high-dose Omega-3 supplementation reduces CSF interleukin-6","Double-blind trial of 204 patients confirmed reduction in CSF interleukin-6 anti-inflammatory markers.",SUPPORTING,Medicine
+"Model X-900 achieves 88th percentile on multiple-choice MBE questions","Standardized benchmark testing on 200 MBE questions verified an 88th percentile score.",SUPPORTING,AI Benchmarks
+"AI tutoring caused a 35% increase in exam scores","Students receiving human tutoring improved by 35%, whereas AI software users improved by 8%.",CONTRADICTING,Education
+"Reducing class sizes below 15 improves 4th grade math scores","Large-scale study across 200 schools found no measurable difference between class sizes of 14 and 22.",CONTRADICTING,Education
+"Daily high-dose Omega-3 reverses early-stage Alzheimer's disease","PET imaging trials demonstrated zero reduction in cortical amyloid-beta plaques or brain atrophy.",CONTRADICTING,Medicine
+"Model X-900 eliminates human lawyer oversight in corporate M&A due diligence","Legal ethics committees mandate human attorney review for all binding commercial contract approvals.",CONTRADICTING,AI Benchmarks

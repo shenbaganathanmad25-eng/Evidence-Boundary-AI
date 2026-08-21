@@ -1,0 +1,142 @@
+{
+  "scenario_id": "scenario_ai_benchmarks",
+  "title": "LLM Legal Reasoning & Bar Exam Benchmarks",
+  "domain": "AI & Benchmarking",
+  "raw_claim": "Model X-900 surpasses human legal experts in contract law analysis and eliminates human lawyer oversight in corporate M&A due diligence.",
+  "sub_claims": [
+    {
+      "id": "sub_1",
+      "text": "Model X-900 scores 88% on standardized multiple-choice Uniform Bar Examination contract law questions.",
+      "original_claim_segment": "Model X-900 surpasses human legal experts in contract law analysis",
+      "is_supported": true,
+      "confidence_level": 0.94,
+      "boundary_gap_description": "Supported on static multiple-choice benchmarks like UBE MBE section."
+    },
+    {
+      "id": "sub_2",
+      "text": "High benchmark test performance guarantees superior legal reasoning on complex, novel real-world corporate M&A contracts.",
+      "original_claim_segment": "surpasses human legal experts in complex contract law analysis",
+      "is_supported": false,
+      "confidence_level": 0.32,
+      "boundary_gap_description": "UNSUPPORTED BOUNDARY GAP: High benchmark accuracy degrades by 41% on multi-jurisdictional ambiguous contracts containing unstated assumptions."
+    },
+    {
+      "id": "sub_3",
+      "text": "AI performance enables complete elimination of human lawyer oversight in corporate M&A due diligence.",
+      "original_claim_segment": "eliminates human lawyer oversight in corporate M&A due diligence",
+      "is_supported": false,
+      "confidence_level": 0.10,
+      "boundary_gap_description": "UNSUPPORTED & HIGH RISK: Hallucination rate on indemnification clause exception edge-cases introduces catastrophic unmanaged liability."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_1",
+      "sub_claim_id": "sub_1",
+      "source_title": "Evaluating GPT-4 and Advanced LLMs on the Uniform Bar Examination",
+      "authors": "Katz, D. M., Bommarito, M. J., Gao, S., & Arredondo, P.",
+      "source_url": "https://openalex.org/works/W432408018",
+      "publication_year": 2023,
+      "quote_snippet": "The model achieved a score of 88th percentile on the MBE section, outperforming average law student test-takers on multiple-choice legal doctrine.",
+      "evidence_type": "SUPPORTING",
+      "relevance_score": 0.96,
+      "sample_size": "N = 200 standardized MBE questions",
+      "target_population": "Standardized Bar Exam Questions",
+      "methodology": "Zero-shot Evaluation Benchmark",
+      "is_demo": true
+    },
+    {
+      "id": "ev_2",
+      "sub_claim_id": "sub_2",
+      "source_title": "LegalBench: Probing the Limits of Large Language Models in Legal Reasoning",
+      "authors": "Guha, N., Nyarko, J., Ho, D. E., et al.",
+      "source_url": "https://openalex.org/works/W438619203",
+      "publication_year": 2024,
+      "quote_snippet": "On nuanced legal tasks requiring open-ended issue spotting and contractual ambiguity resolution, top LLM accuracy dropped from 88% down to 47%, suffering from contamination sensitivity.",
+      "evidence_type": "CONTRADICTORY",
+      "relevance_score": 0.95,
+      "sample_size": "162 specialized legal sub-tasks",
+      "target_population": "Complex Real-World Contracts",
+      "methodology": "Expert-Annotated Stress Benchmark",
+      "is_demo": true
+    },
+    {
+      "id": "ev_3",
+      "sub_claim_id": "sub_3",
+      "source_title": "Hallucination Risk in Automated Corporate M&A Due Diligence Workflows",
+      "authors": "Stanford Center for Legal Informatics (CodeX)",
+      "source_url": "https://law.stanford.edu/codex",
+      "publication_year": 2024,
+      "quote_snippet": "Unassisted LLMs missed 18.4% of non-standard indemnification caps and generated false confirmation quotes in 6.2% of audited deal structures.",
+      "evidence_type": "CONTRADICTORY",
+      "relevance_score": 0.93,
+      "sample_size": "N = 50 real M&A deal rooms",
+      "target_population": "Corporate Acquisition Contracts",
+      "methodology": "Empirical Error Rate Audit",
+      "is_demo": true
+    }
+  ],
+  "ebdf_deltas": {
+    "delta_scope": "Evidence evaluates static multiple-choice Bar exam questions; Claim scope generalizes to live multi-billion dollar M&A deal rooms.",
+    "delta_certainty": "Evidence reports 88% score on standardized test; Claim asserts complete elimination of human lawyer oversight.",
+    "delta_temporal": "Evidence evaluated single-turn static prompts; Claim assumes robust performance across dynamic multi-step legal negotiations.",
+    "delta_causal": "Claim equates test question accuracy with professional legal judgement and liability management."
+  },
+  "stress_test_results": [
+    {
+      "perturbation_type": "SCOPE_SHIFT",
+      "scenario_title": "Unseen Ambiguous Contract Perturbation",
+      "attack_hypothesis": "Test performance when contract phrasing uses non-standard jurisdiction definitions not present in training data.",
+      "original_evidence_holding": "High accuracy on standard MBE bar exam questions.",
+      "attacked_condition": "Non-standard UK-Delaware hybrid cross-border clause.",
+      "claim_survived": false,
+      "fragility_impact": 24.0,
+      "breaking_point_explanation": "FAILED: Accuracy dropped by 41% due to benchmark memorization/contamination lack of generalization."
+    },
+    {
+      "perturbation_type": "CERTAINTY_ELEVATION",
+      "scenario_title": "Adversarial Drafter Attack",
+      "attack_hypothesis": "Test model resilience against deliberate counter-party ambiguity insertion in liability clauses.",
+      "original_evidence_holding": "Accurate clause classification on synthetic datasets.",
+      "attacked_condition": "Nested double-negative indemnity exceptions.",
+      "claim_survived": false,
+      "fragility_impact": 28.0,
+      "breaking_point_explanation": "FAILED: Model missed 18.4% of nested exceptions, producing false safety assurances."
+    },
+    {
+      "perturbation_type": "CAUSAL_LEAP",
+      "scenario_title": "Zero-Human Supervision Attack",
+      "attack_hypothesis": "Evaluate automated execution of due diligence without attorney sign-off.",
+      "original_evidence_holding": "High accuracy under human expert evaluation.",
+      "attacked_condition": "Fully unassisted autonomous execution.",
+      "claim_survived": false,
+      "fragility_impact": 20.0,
+      "breaking_point_explanation": "FAILED: Hallucination rate creates unacceptable catastrophic liability risks for commercial transactions."
+    }
+  ],
+  "fragility": {
+    "overall_score": 79.0,
+    "unsupported_boundary_penalty": 38.0,
+    "stress_test_failure_penalty": 26.0,
+    "ebdf_delta_penalty": 15.0,
+    "fragility_tier": "HIGH_FRAGILITY",
+    "explanation_summary": "Strong multiple-choice bar exam scores have been improperly extrapolated into a claim of autonomous human-lawyer replacement in high-stakes corporate due diligence."
+  },
+  "verdict": "INSUFFICIENTLY_VERIFIED",
+  "verdict_justification": "While multiple-choice Bar exam mastery is verified, claims of complete human lawyer elimination and flawless M&A contract analysis are contradicted by high error rates on complex, unseen contracts.",
+  "boundary_summary": "Evidence boundary ends at standardized multiple-choice doctrine tests. In real-world ambiguous contract analysis, severe accuracy drops require mandatory human expert oversight.",
+  "killer_questions": [
+    "What is the model's error rate on non-standard cross-border indemnification exceptions?",
+    "How does the system mitigate the 18.4% false-negative risk identified in real deal rooms?",
+    "Does scoring 88% on standardized MBE questions guarantee ethical and legal compliance under state bar rules?"
+  ],
+  "missing_evidence_requirements": [
+    "Empirical audit of model performance on un-contaminated, real-world M&A deal room archives.",
+    "Stress-test evaluation on adversarial contract drafting designed to trigger false confidence.",
+    "Liability insurance compliance framework for unassisted AI legal output."
+  ],
+  "evidence_mutations": [
+    "Source quote '88th percentile on MBE multiple-choice' mutated into 'surpasses human legal experts in contract law'.",
+    "Source quote 'useful assistant for issue spotting' exaggerated into 'eliminates human lawyer oversight'."
+  ]
+}

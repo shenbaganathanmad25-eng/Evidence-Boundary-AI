@@ -1,0 +1,141 @@
+{
+  "scenario_id": "demo_star_education_claim",
+  "domain": "Education & Policy",
+  "raw_claim": "Reducing elementary classroom sizes below 15 students directly increases long-term high school STEM graduation rates by 35% across all socioeconomic demographics.",
+  "sub_claims": [
+    {
+      "id": "sub_1",
+      "text": "Classroom size reduction below 15 students improves 4th-grade math & science assessment scores.",
+      "original_claim_segment": "Reducing elementary classroom sizes below 15 students improves early STEM scores",
+      "is_supported": true,
+      "confidence_level": 0.92,
+      "boundary_gap_description": "Well-supported by Project STAR RCT data for primary grades K-3."
+    },
+    {
+      "id": "sub_2",
+      "text": "Early academic improvements directly translate into 35% higher high school STEM graduation rates.",
+      "original_claim_segment": "directly increases long-term high school STEM graduation rates by 35%",
+      "is_supported": false,
+      "confidence_level": 0.28,
+      "boundary_gap_description": "UNSUPPORTED BOUNDARY GAP: Longitudinal tracking stops at Grade 8. No statistical evidence supports a 35% gain at high school graduation."
+    },
+    {
+      "id": "sub_3",
+      "text": "The intervention effect is uniform across all socioeconomic demographics.",
+      "original_claim_segment": "across all socioeconomic demographics",
+      "is_supported": false,
+      "confidence_level": 0.35,
+      "boundary_gap_description": "UNSUPPORTED BOUNDARY GAP: Benefits are heavily concentrated in Title I underfunded schools with high initial student-teacher ratios."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_star_2001",
+      "sub_claim_id": "sub_1",
+      "source_title": "Project STAR: Longitudinal Effects of Small Class Sizes in Early Grades",
+      "authors": "Krueger, A. B., & Whitmore, D. W.",
+      "source_url": "https://openalex.org/works/W214589210",
+      "publication_year": 2001,
+      "quote_snippet": "Students randomly assigned to small classes (13-17 pupils) in K-3 scored 0.20 to 0.28 standard deviations higher on standardized reading and math tests.",
+      "evidence_type": "SUPPORTING",
+      "relevance_score": 0.95,
+      "sample_size": "N = 11,600 students across 79 Tennessee schools",
+      "target_population": "K-3 Elementary Students in Tennessee",
+      "methodology": "Randomized Controlled Trial (RCT)",
+      "is_demo": true
+    },
+    {
+      "id": "ev_nye_2006",
+      "sub_claim_id": "sub_2",
+      "source_title": "Middle School Retention and STEM Track Selection in Tennessee Cohorts",
+      "authors": "Nye, B., Hedges, L. V., & Konstantopoulos, S.",
+      "source_url": "https://eric.ed.gov/?id=ED492104",
+      "publication_year": 2006,
+      "quote_snippet": "Class size benefits persist through Grade 8 math enrollment, showing a modest 4.2% increase in advanced algebra placement. Long-term graduation tracking was unavailable.",
+      "evidence_type": "INSUFFICIENT",
+      "relevance_score": 0.88,
+      "sample_size": "N = 4,200 follow-up cohort",
+      "target_population": "Grade 8 Students",
+      "methodology": "Observational Cohort Follow-up",
+      "is_demo": true
+    },
+    {
+      "id": "ev_dynarski_2013",
+      "sub_claim_id": "sub_3",
+      "source_title": "Heterogeneous Effects of Class-Size Reduction Policies",
+      "authors": "Dynarski, S., Hyman, J., & Schanzenbach, D. W.",
+      "source_url": "https://openalex.org/works/W198273891",
+      "publication_year": 2013,
+      "quote_snippet": "Small class effects on college enrollment were statistically significant only for minority and economically disadvantaged students, with near-zero impact on affluent suburban peers.",
+      "evidence_type": "CONTRADICTORY",
+      "relevance_score": 0.91,
+      "sample_size": "N = 9,800 students",
+      "target_population": "Diverse Socioeconomic Districts",
+      "methodology": "Quasi-experimental Difference-in-Differences",
+      "is_demo": true
+    }
+  ],
+  "ebdf_deltas": {
+    "delta_scope": "Evidence tested primary grade (K-3) classrooms in a single state; Claim scope generalizes to all elementary grades nationwide.",
+    "delta_certainty": "Evidence establishes modest 4.2% middle-school algebra bump; Claim asserts 35% definitive causal boost in STEM graduation.",
+    "delta_temporal": "Evidence longitudinal tracking ends at Grade 8 (age 14); Claim extrapolates 8 years into high school graduation.",
+    "delta_causal": "Claim omits key confounding factors: high school teacher turnover, curriculum availability, and peer group influence."
+  },
+  "stress_test_results": [
+    {
+      "perturbation_type": "SCOPE_SHIFT",
+      "scenario_title": "Demographic Subgroup Attack",
+      "attack_hypothesis": "Test if 35% STEM graduation bump holds in high-income suburban school districts.",
+      "original_evidence_holding": "Benefits concentrated in resource-constrained schools.",
+      "attacked_condition": "Suburban affluent districts with existing low baseline ratios (1:18).",
+      "claim_survived": false,
+      "fragility_impact": 22.5,
+      "breaking_point_explanation": "FAILED: Effect size collapses to near-zero (+0.8% statistically insignificant) when baseline resources are already high."
+    },
+    {
+      "perturbation_type": "TEMPORAL_EXTRAPOLATION",
+      "scenario_title": "Fade-Out Effect Attack",
+      "attack_hypothesis": "Test if K-3 class size advantage persists through high school without middle school interventions.",
+      "original_evidence_holding": "STAR follow-up measured through 8th grade.",
+      "attacked_condition": "Grade 9-12 high school transition without continued class size capping.",
+      "claim_survived": false,
+      "fragility_impact": 25.0,
+      "breaking_point_explanation": "FAILED: Academic fade-out dynamics attenuate over 5+ years, requiring ongoing intervention to sustain gains."
+    },
+    {
+      "perturbation_type": "CAUSAL_LEAP",
+      "scenario_title": "Teacher Allocation Confounding Attack",
+      "attack_hypothesis": "Test whether class size reduction alone causes improvement without superior teacher assignment.",
+      "original_evidence_holding": "Smaller classes allow more individual instruction.",
+      "attacked_condition": "Random teacher assignment including novice educators.",
+      "claim_survived": true,
+      "fragility_impact": 8.0,
+      "breaking_point_explanation": "PASSED: Instruction quality modulates magnitude, but smaller class size retains positive signal independent of teacher tenure."
+    }
+  ],
+  "fragility": {
+    "overall_score": 71.5,
+    "unsupported_boundary_penalty": 36.5,
+    "stress_test_failure_penalty": 25.0,
+    "ebdf_delta_penalty": 10.0,
+    "fragility_tier": "HIGH_FRAGILITY",
+    "explanation_summary": "The claim relies on valid primary-grade research, but breaks down severely when extrapolating a 35% causal STEM graduation gain across all demographics without longitudinal evidence past 8th grade."
+  },
+  "verdict": "INSUFFICIENTLY_VERIFIED",
+  "verdict_justification": "Primary grade benefits are verified (subclaim 1), but the claimed 35% high school STEM graduation boost and universal demographic uniformity are unsupported by available longitudinal data.",
+  "boundary_summary": "Evidence boundary ends at Grade 8 standardized assessment scores for economically disadvantaged cohorts. Beyond Grade 8, the claim is speculative extrapolation.",
+  "killer_questions": [
+    "What longitudinal study tracks STAR project participants through high school STEM major completion?",
+    "Does the 35% graduation increase hold when controlling for high school AP science course availability?",
+    "Why does the claim assert universal demographic application when Dynarski et al. prove heterogeneous outcomes?"
+  ],
+  "missing_evidence_requirements": [
+    "Longitudinal cohort tracking data linking K-3 class size to Grade 12 STEM diploma completion.",
+    "Comparative trial evaluating class-size impact in suburban vs Title I high schools.",
+    "Statistical mediation analysis controlling for high school teacher quality and tutoring access."
+  ],
+  "evidence_mutations": [
+    "Source quote 'modest 4.2% algebra bump' mutated into '35% direct increase in STEM graduation rates'.",
+    "Source quote 'effects significant only for economically disadvantaged' mutated into 'across all socioeconomic demographics'."
+  ]
+}
