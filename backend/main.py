@@ -4,6 +4,7 @@ import logging
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 # Add backend directory to sys.path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -52,7 +53,13 @@ async def global_exception_handler(request: Request, exc: Exception):
 app.include_router(api_router)
 app.include_router(predict_router)  # Mounted at root for POST /predict and GET /health
 
+# Serve Frontend Production Static Build
+frontend_dist = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "frontend", "dist"))
+if os.path.exists(frontend_dist):
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="static")
+    logger.info(f"Mounted production frontend build from: {frontend_dist}")
+
 if __name__ == "__main__":
     import uvicorn
     logger.info(f"Starting {settings.APP_NAME} (DEMO_MODE={settings.DEMO_MODE})...")
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

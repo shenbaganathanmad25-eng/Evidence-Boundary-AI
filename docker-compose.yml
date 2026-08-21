@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  evidence-boundary-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DEMO_MODE=True
+      - LOG_LEVEL=INFO
+    restart: always
